@@ -46,7 +46,7 @@
                                 <td><?=$row["dari_div"]; ?></td>
                                 <td><?=$row["kepada_div"]; ?></td>
                                 <td><?=$row["penerima"]; ?></td>
-                                <td><?=$row["file_dokumen"]; ?></td>
+                                <td><?=$row["nm_file"]; ?></td>
                                 <td><?=$row["status"]; ?></td>
                                 <td><?=$row["tgl_masuk"]; ?></td>
                                 <td><?=$row["tgl_diterima"]; ?></td>
@@ -57,7 +57,7 @@
                                         data-toggle="modal" 
                                         href='#modalid'
                                         onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
-                                                        '<?=$row['penerima'];?>', '<?=$row['file_dokumen'];?>', '<?=$row['status'];?>')"
+                                                        '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')"
                                         ><i class="typcn typcn-eye"></i>
                                     </a>
                                     <!-- <form action="" method="POST" name="info"> -->
@@ -109,7 +109,7 @@
                                 <td><?=$row["dari_div"]; ?></td>
                                 <td><?=$row["kepada_div"]; ?></td>
                                 <td><?=$row["penerima"]; ?></td>
-                                <td><?=$row["file_dokumen"]; ?></td>
+                                <td><?=$row["nm_file"]; ?></td>
                                 <td><?=$row["status"]; ?></td>
                                 <td><?=$row["tgl_masuk"]; ?></td>
                                 <td><?=$row["tgl_diterima"]; ?></td>
@@ -125,7 +125,7 @@
                                                     data-toggle="modal" 
                                                     href='#modalid'
                                                     onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
-                                                                    '<?=$row['penerima'];?>', '<?=$row['file_dokumen'];?>', '<?=$row['status'];?>')"
+                                                                    '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')"
                                                     ><i class="typcn typcn-eye"></i>
                                                 </a>
                                                 <div class="btn-group">
@@ -138,7 +138,7 @@
                                                     data-toggle="modal" 
                                                     href='#modalid'
                                                     onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
-                                                                    '<?=$row['penerima'];?>', '<?=$row['file_dokumen'];?>', '<?=$row['status'];?>')"
+                                                                    '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')"
                                                     ><i class="typcn typcn-eye"></i>
                                                 </a>
                                             <?php }
@@ -244,7 +244,7 @@
                                 <label for="" class="col-sm-3 col-form-label">File :</label>
                                 <div class="col-md-10">
                                     <!-- input -->
-                                    <input type="text" class="form-control" name="file_dokumen" id="modal_file" style="border: none; font-weight:bold;" readonly>
+                                    <input type="text" class="form-control" name="nm_file" id="modal_file" style="border: none; font-weight:bold;" readonly>
                                 </div>
                             </div>
                         </div>
@@ -274,7 +274,7 @@
 </script> -->
 <script>
     // <!-- script onclick dari button view mulai -->
-    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, file_dokumen,status){
+    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,status){
         document.getElementById('modalid_doc').value = id_dokumen;
         document.getElementById('modal_inv').value = inv_dokumen;
         document.getElementById('modalnama_doc').value = nama_dokumen;
@@ -282,7 +282,7 @@
         document.getElementById('modal_dari').value = dari_div;
         document.getElementById('modal_kepada').value = kepada_div;
         document.getElementById('modal_penerima').value = penerima;
-        document.getElementById('modal_file').value = file_dokumen;
+        document.getElementById('modal_file').value = nm_file;
         document.getElementById('modal_status').value = status;
     }
     // datatables

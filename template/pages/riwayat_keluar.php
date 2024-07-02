@@ -1,6 +1,8 @@
 <?php
 // echo "riwayat keluar";
+
 ?>
+
 
 
 <div class="col-md-12 grid-margin stretch-card">
@@ -40,7 +42,7 @@
                                         <td><?=$row["dari_div"]; ?></td>
                                         <td><?=$row["kepada_div"]; ?></td>
                                         <td><?=$row["penerima"]; ?></td>
-                                        <td><?=$row["file_dokumen"]; ?></td>
+                                        <td><?=$row["nm_file"]; ?></td>
                                         <td><?=$row["status"]; ?></td>
                                         <td><?=$row["tgl_masuk"]; ?></td>
                                         <td><?=$row["tgl_diterima"]; ?></td>
@@ -50,7 +52,7 @@
                                                 data-toggle="modal"
                                                 href="#modalid"
                                                 onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
-                                                                '<?=$row['penerima'];?>', '<?=$row['file_dokumen'];?>', '<?=$row['status'];?>')">
+                                                                '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')">
                                                 <i class="typcn typcn-eye"></i>
                                             </a>
                                         </td>
@@ -150,15 +152,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="form-group row">
                                 <!-- label -->
                                 <label for="" class="col-sm-3 col-form-label">File :</label>
                                 <div class="col-md-10">
                                     <!-- input -->
-                                    <input type="text" class="form-control" name="file_dokumen" id="modal_file" style="border: none; font-weight:bold;" readonly>
+                                    <input type="text" class="form-control" name="nm_file" id="modal_file" style="border: none; font-weight:bold;" readonly>
                                 </div>
                             </div>
+
+                            <?php
+                            $pdf = $ListQuery->listFile();
+                            foreach ($pdf as $file): ?>
+                            <td><a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary">Open</a></td>
+                            <?php endforeach; var_dump($pdf) ?>
                         </div>
                     </div>
                 </div>
@@ -173,7 +181,7 @@
 </div>
 <!-- modal form detail dokumentasi selesai -->
 <script>
-    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, file_dokumen,status){
+    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,status){
         document.getElementById('modalid_doc').value = id_dokumen;
         document.getElementById('modal_inv').value = inv_dokumen;
         document.getElementById('modalnama_doc').value = nama_dokumen;
@@ -181,7 +189,7 @@
         document.getElementById('modal_dari').value = dari_div;
         document.getElementById('modal_kepada').value = kepada_div;
         document.getElementById('modal_penerima').value = penerima;
-        document.getElementById('modal_file').value = file_dokumen;
+        document.getElementById('modal_file').value = nm_file;
         document.getElementById('modal_status').value = status;
     }
 </script>

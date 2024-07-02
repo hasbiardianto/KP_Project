@@ -277,7 +277,23 @@ class listQuery extends database {
         return $result;
     }
 
+    public function listFile(){
+        $query = "SELECT id_dokumen, nm_file FROM tb_dokumen";
+        $hasil = $this->conn->query($query);
+        return $hasil->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getFiles($id_dokumen){
+        $query = "SELECT nm_file, filecontent FROM tb_dokumen WHERE id_dokumen = ?";
+        $qfile = $this->conn->prepare($query);
+        $qfile->bind_param("i", $id_dokumen);
+        $qfile->execute();
+        $hasil = $qfile->get_result();
+        return $hasil->fetch_assoc();
+    }
 
 }
+
+
 
 ?>

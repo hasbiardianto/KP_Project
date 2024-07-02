@@ -34,15 +34,6 @@ class register extends database{
         }
     }
 
-    // public function lvlRegis(){
-    //     $queryLevel = mysqli_query($this->conn, "SELECT lvl FROM tb_user");
-    //     mysqli_fetch_assoc($queryLevel);
-    //     if ($queryLevel->num_rows > 0){
-    //         return $queryLevel;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 }
 
 // membuat class global child dan inheritance class database
@@ -104,23 +95,9 @@ class masuk extends database {
 
 // membuat listQuery untuk menampilkan(show),membuat(create),dan mengupdate(update) data dari database
 class listQuery extends database {
-    // public function upFile($nm_file, $filecontent) {
-    //     $query = "INSERT INTO tb_filesdoc (nm_file, filecontent) VALUES (?,?)";
-    //     $statement = $this->conn->prepare($query);
-    //     if($statement === false) {
-    //         die ("error prep statement : ".$this->conn->error);
-    //     }
-    //     $null = NULL;
-    //     $statement->bind_param("sb", $nm_file, $null);
-    //     $statement->send_long_data(1,$filecontent);
-    //     if($statement->execute()){
-    //         return true;
-    //     } else {
-    //         die ("err execute statement : ".$statement->error);
-    //     }
-    // }
+
     // fungsi untuk pengisian form dokumen
-    public function isiForm($id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $file_dokumen,$nm_file,$filecontent, $jenis_dokumen,$status){
+    public function isiForm($id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $nm_file,$filecontent, $jenis_dokumen,$status){
         // menampilkan nama divisi pada tabel dokumen ($dari div) yang diambil dari database tb_divisi (untuk menampilkan data agar terlihat saat di tabel field (dari div))
         $queryNama = mysqli_query($this->conn,"SELECT * FROM tb_divisi WHERE id_divisi=$id_divisi");
         $hasilQueryNama = mysqli_fetch_array($queryNama);
@@ -132,11 +109,6 @@ class listQuery extends database {
         $hasilQueryNama2 = mysqli_fetch_array($queryNama2);
         $kepada_div=$hasilQueryNama2[1];
         echo $kepada_div;
-
-        // $queryFile = mysqli_query($this->conn,"SELECT * FROM tb_filesdoc WHERE id_file=$id_file");
-        // $hslqueryFile = mysqli_fetch_assoc($queryFile);
-        // $id_file=$hslqueryFile[1];
-        // echo $id_file;
 
         // pembuatan no dokumen (seperti no invoice)
         // $queryNoDoc = mysqli_query($this->conn, "SELECT MAX(no_dokumen) AS no_dokumen FROM tb_dokumen WHERE YEAR(tgl_masuk) = YEAR(NOW())");
@@ -155,53 +127,20 @@ class listQuery extends database {
             $inv_dokumen=$no_dokumen.'/'.$kepada_div.'/'.$bulan;
         }
 
-        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, file_dokumen,nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
+        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
         if ($query === false){
             die ("error prep state : ".$this->conn->error);
         }
-        $query->bind_param("iissssssssbsss",$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$file_dokumen,$nm_file,$null,$jenis_dokumen,$status,);
-        $query->send_long_data(11,$filecontent);
+        $null = NULL;
+        $query->bind_param("iissssssssbss",$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$nm_file,$null,$jenis_dokumen,$status,);
+        $query->send_long_data(10,$filecontent);
+        // var_dump($filecontent);
         if ($query->execute()){
             return true;
         }else{
             die("error exc state : ".$query->error);
         }
-        // query insert data, setelah semua kondisi diatas berhasil di eksekusi
-        // $query = mysqli_query($this->conn, "INSERT INTO tb_dokumen (id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, file_dokumen,nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES ('$id_divisi','$id_divisi_kepada','$no_dokumen','$inv_dokumen','$nama_dokumen','$pengirim','$dari_div','$kepada_div','$penerima','$file_dokumen','$nm_file','$filecontent','$jenis_dokumen','$status',NOW())");
-        // $statement = $this->conn->prepare($query);
-        // if($statement === false) {
-        //     die ("error prep statement : ".$this->conn->error);
-        // }
-        // $null = NULL;
-        // $statement->bind_param("sb", $nm_file, $null);
-        // $statement->send_long_data(1,$filecontent);
-        // if($statement->execute()){
-        //     return true;
-        // } else {
-        //     die ("err execute statement : ".$statement->error);
-        // }
-
     }
-
-
-
-    // function insertDok(){
-    //     $table = $_POST['table'];
-    //     unset($_POST['act']);
-    //     unset($_POST['table']);
-
-    //     $column = implode(',',array_keys($_POST));
-    //     $values = implode(','.array_values($_POST));
-    //     $valuess=[];
-    //     foreach($_POST as $key => $value){
-    //         $valuee="'".$value."'";
-    //         $valuess[]=$valuee;
-    //     }
-    //     $values = join(',',$valuess);
-    //     $result = mysqli_query($this->conn, "INSERT INTO $table ($column) VALUES ($values)");
-    //     return $result;
-
-    // }
 
     // fungsi untuk menampilkan hasil dokumen keluar yang telah di buat setelah mengisi form dokumen
     public function document($id_user){
@@ -221,15 +160,6 @@ class listQuery extends database {
     // yaitu jika user yang login adalah divisi IT maka data dokumen yang diambil dari database hanya dokumen yang dikirim untuk divisi IT saja.
     public function documentIn($id_user){
 
-        // $queryStatus = mysqli_query($this->conn,"SELECT status FROM tb_dokumen");
-        // $hasilQueryStatus = mysqli_fetch_array($queryStatus);
-        // $status=$hasilQueryStatus[0];
-        // echo $status;
-
-        // $docIn = mysqli_query($this->conn, "SELECT * FROM tb_dokumen A, tb_user B WHERE A.penerima=B.$nama_user OR (kepada_div = 'IT' AND penerima = 'all')"); (percobaan 1)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND kepada_div='IT'"); (percobaan 2)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B, tb_divisi C WHERE A.id_divisi=C.id_divisi AND B.id_user='$id_user' AND B.id_divisi = C.id_divisi");
         $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi=B.id_divisi AND status='pendingDari' OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
 
         
@@ -243,15 +173,6 @@ class listQuery extends database {
 
     public function documentIn2($id_user){
 
-        // $queryStatus = mysqli_query($this->conn,"SELECT status FROM tb_dokumen");
-        // $hasilQueryStatus = mysqli_fetch_array($queryStatus);
-        // $status=$hasilQueryStatus[0];
-        // echo $status;
-
-        // $docIn = mysqli_query($this->conn, "SELECT * FROM tb_dokumen A, tb_user B WHERE A.penerima=B.$nama_user OR (kepada_div = 'IT' AND penerima = 'all')"); (percobaan 1)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND kepada_div='IT'"); (percobaan 2)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B, tb_divisi C WHERE A.id_divisi=C.id_divisi AND B.id_user='$id_user' AND B.id_divisi = C.id_divisi");
         $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi AND status='pendingKepada' OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
         
         mysqli_fetch_assoc($docIn);
@@ -264,15 +185,6 @@ class listQuery extends database {
 
     public function documentIn3($id_user){
 
-        // $queryStatus = mysqli_query($this->conn,"SELECT status FROM tb_dokumen");
-        // $hasilQueryStatus = mysqli_fetch_array($queryStatus);
-        // $status=$hasilQueryStatus[0];
-        // echo $status;
-
-        // $docIn = mysqli_query($this->conn, "SELECT * FROM tb_dokumen A, tb_user B WHERE A.penerima=B.$nama_user OR (kepada_div = 'IT' AND penerima = 'all')"); (percobaan 1)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND kepada_div='IT'"); (percobaan 2)
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
-        // $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B, tb_divisi C WHERE A.id_divisi=C.id_divisi AND B.id_user='$id_user' AND B.id_divisi = C.id_divisi");
         $docIn = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi AND status='Accept' OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
         
         mysqli_fetch_assoc($docIn);
@@ -328,11 +240,6 @@ class listQuery extends database {
         }
     }
 
-    // public function approve($id_dokumen,$status){
-    //     $approval = mysqli_query($this->conn, "UPDATE tb_dokumen SET status='$status', tgl_diterima=(NOW()) WHERE id_dokumen=$id_dokumen");
-    //     return mysqli_fetch_assoc($approval);
-    // }
-
     function updateStatus(){
         $table = $_POST['table'];
         $field = $_POST['field'];
@@ -342,11 +249,7 @@ class listQuery extends database {
         $status = $_POST['status'];
         // $status = $_POST['status'];
         $result = mysqli_query($this->conn, "UPDATE $table SET status='$status', tgl_diterima=(NOW()) WHERE $field='$id'");
-        // $result = mysqli_query($this->conn, "SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=id_user AND A.id_divisi_kepada=B.id_divisi OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
-        // $result = mysqli_query($this->conn,"DELETE FROM $table WHERE $field='$id'");
-        
-        
-        // $result = mysqli_query($this->conn, "SELECT * FROM $table WHERE $field='$id' AND $status='$status'");
+
         return $result;
     }
 
@@ -366,37 +269,14 @@ class listQuery extends database {
         $table = $_POST['table'];
         $field = $_POST['field'];
         $id = $_POST['id'];
-        // $id_user = $_SESSION["id_user"];
-        // $id_dokumen = $_POST['id_dokumen'];
+
         $status = $_POST['status'];
-        // $status = $_POST['status'];
-        // $nama_dokumen = $_POST['nama_dokumen'];
+
         $result = mysqli_query($this->conn, "UPDATE $table SET status='$status',tgl_selesai=(NOW()) WHERE $field='$id'");
-        // $result = mysqli_query($this->conn, "INSERT INTO tb_docHist (nama_dokumen) VALUES ($nama_dokumen)");
-        // $result = mysqli_query($this->conn, "SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=id_user AND A.id_divisi_kepada=B.id_divisi OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC");
-        // $result = mysqli_query($this->conn,"DELETE FROM $table WHERE $field='$id'");
-        
-        
-        // $result = mysqli_query($this->conn, "SELECT * FROM $table WHERE $field='$id' AND $status='$status'");
+
         return $result;
     }
 
-    // function insertAfterAcc(){
-    //     $table=$_POST['tabel'];
-    //     unset($_POST['act']);
-    //     unset($_POST['tabel']);
-
-    //     $column = implode(',',array_keys($_POST));
-    //     $value = implode(',',array_values($_POST));
-    //     $valuees = [];
-    //     foreach ($_POST as $key => $values){
-    //         $valuee = "'".$values."'";
-    //         $valuees[] = $valuee;
-    //     }
-    //     $value = join(',',$valuees);
-    //     $result = mysqli_query($this->conn,"INSERT INTO $table($column) VALUES($value)");
-    //     return $result;
-    // }
 
 }
 

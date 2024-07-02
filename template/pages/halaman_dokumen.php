@@ -26,7 +26,7 @@ if(isset($_POST['submit'])){
         ["dari_div"],
         ["kepada_div"],
         $_POST["penerima"],
-        ["file_dokumen"],
+        // ["file_dokumen"],
         $nm_file,
         $filecontent,
         // $_POST['filecontent'],
@@ -34,26 +34,9 @@ if(isset($_POST['submit'])){
         $_POST["status"]
     );
 
-    // $nm_file = $_FILES['file']['name'];
-    // $filecontent = file_get_contents($_FILES['file']['tmp_name']);
-    // $ListQuery->isiForm($nm_file,$filecontent);
+
 }
 
-// if(isset($_POST['submit'])) {
-//     $nm_file = $_FILES['file']['name'];
-//     $filecontent = file_get_contents($_FILES['file']['tmp_name']);
-//     $ListQuery->upFile($nm_file,$filecontent);
-// }
-
-// if(isset($_POST['submit'])){
-//     $file_dokumen = $_FILES['file']['name'];
-//     $filecontent = file_get_contents($_FILES['file']['tmp_name']);
-//     if($ListQuery->uploadFile($file_dokumen,$filecontent)){
-//         echo "<script>alert('File uploaded successfully');</script>";
-//     } else {
-//         echo "<script>alert('File upload failed');</script>";
-//     }
-// }
 ?>
 <!-- Datatables -->
 <link rel="stylesheet" href="https://cdn.datatables.net/2.0.0/css/dataTables.dataTables.css">
@@ -121,18 +104,7 @@ if(isset($_POST['submit'])){
                                                 }
                                             ?>
                                         </select>
-                                    </div>                                
-                                    <!-- Radio button select penerima mulai (masih gagal)-->
-                                    <!-- <div class="form-group">
-                                        <label for="">Penerima</label><br>
-                                        <input type="text" name="pengirim" class="form-control" placeholder="Pengirim">
-                                        <select class="col-sm-6" name="penerima">
-
-                                        </select>
-                                    </div> -->
-                                    <!-- Radio button select penerima selesai-->
-
-
+                                    </div>
                                     <div class="form-group">
                                         <label for="">Penerima</label><br>
                                         <!-- <input type="text" name="pengirim" class="form-control" placeholder="Pengirim"> -->
@@ -140,27 +112,17 @@ if(isset($_POST['submit'])){
                                             <?php
                                                 $listLVL = $ListQuery->lvlPenerima();
                                                 if ($listLVL){
-                                                    foreach($listLVL as $hasil){
-                                                        
+                                                    foreach($listLVL as $hasil){ 
                                                         echo "<option value=$hasil[nama_user]>$hasil[nama_user]</option>";
                                                     }
                                                         echo "<option>ALL</option>";
-
                                                 }
                                             ?>
                                         </select>
                                     </div>
-
-                                    <!-- input text untuk field penerima mulai -->
-                                    <!-- <div class="form-group">
-                                        <label for="">Penerima</label>
-                                        <input type="text" name="penerima" class="form-control" placeholder="Penerima">
-                                    </div> -->
-                                    <!-- input text untuk field penerima mulai -->
-
                                     <!-- field upload file dokumen mulai -->
-                                    <div class="form-group">
-                                        <label for="">File Document</label>
+                                    <!-- <div class="form-group">
+                                        <label for="">File Document</label> -->
                                         <!-- <input type="text" class="doc[]" class="file-upload-default"> -->
                                         <!-- <div class="input-group col-xs-12">
                                             <input type="file" name="file_dokumen" class="form-control file-upload-info"  placeholder="Upload Document">
@@ -168,7 +130,7 @@ if(isset($_POST['submit'])){
                                             <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                                             </span>
                                         </div> -->
-                                    </div>
+                                    <!-- </div> -->
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="file">Choose File</label>
@@ -194,10 +156,6 @@ if(isset($_POST['submit'])){
                                     <button class="btn btn-light">Cancel</button>
                                 </form>
                             </div>
-                            <!-- <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -242,7 +200,7 @@ if(isset($_POST['submit'])){
                                     <td><?=$row["dari_div"]; ?></td>
                                     <td><?=$row["kepada_div"]; ?></td>
                                     <td><?=$row["penerima"]; ?></td>
-                                    <td><?=$row["file_dokumen"]; ?></td>
+                                    <td><?=$row["nm_file"]; ?></td>
                                     <td><?=$row["status"]; ?></td>
                                     <td><?=$row["tgl_masuk"]; ?></td>
                                     <td><?=$row["tgl_diterima"]; ?></td>
@@ -252,7 +210,7 @@ if(isset($_POST['submit'])){
                                             data-toggle="modal"
                                             href="#modalid"
                                             onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
-                                                            '<?=$row['penerima'];?>', '<?=$row['file_dokumen'];?>', '<?=$row['status'];?>')">
+                                                            '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')">
                                             <i class="typcn typcn-eye"></i>
                                         </a>
 
@@ -392,7 +350,7 @@ if(isset($_POST['submit'])){
                                 <label for="" class="col-sm-3 col-form-label">File :</label>
                                 <div class="col-md-10">
                                     <!-- input -->
-                                    <input type="text" class="form-control" name="file_dokumen" id="modal_file" style="border: none; font-weight:bold;" readonly>
+                                    <input type="text" class="form-control" name="nm_file" id="modal_file" style="border: none; font-weight:bold;" readonly>
                                 </div>
                             </div>
                         </div>
@@ -414,7 +372,7 @@ if(isset($_POST['submit'])){
 <script src="sweet-alert2.js"></script>
 
 <script>
-    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, file_dokumen,status){
+    function modalid(id_dokumen,inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,status){
     document.getElementById('modalid_doc').value = id_dokumen;
     document.getElementById('modal_inv').value = inv_dokumen;
     document.getElementById('modalnama_doc').value = nama_dokumen;
@@ -422,7 +380,7 @@ if(isset($_POST['submit'])){
     document.getElementById('modal_dari').value = dari_div;
     document.getElementById('modal_kepada').value = kepada_div;
     document.getElementById('modal_penerima').value = penerima;
-    document.getElementById('modal_file').value = file_dokumen;
+    document.getElementById('modal_file').value = nm_file;
     document.getElementById('modal_status').value = status;
     }
     // datatables

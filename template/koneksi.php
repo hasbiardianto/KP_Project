@@ -97,9 +97,10 @@ class masuk extends database {
 class listQuery extends database {
 
     // fungsi untuk pengisian form dokumen
-    public function isiForm($id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $nm_file,$filecontent, $jenis_dokumen,$status){
+    public function isiForm($id_user,$id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $nm_file,$filecontent, $jenis_dokumen,$status){
         // menampilkan nama divisi pada tabel dokumen ($dari div) yang diambil dari database tb_divisi (untuk menampilkan data agar terlihat saat di tabel field (dari div))
         $queryNama = mysqli_query($this->conn,"SELECT * FROM tb_divisi WHERE id_divisi=$id_divisi");
+        // $queryNama = mysqli_query($this->conn,"SELECT id_user, deskripsi FROM tb_user A, tb_divisi B WHERE A.id_divisi= B.id_divisi AND A.id_user = $id_user");
         $hasilQueryNama = mysqli_fetch_array($queryNama);
         $dari_div=$hasilQueryNama[1];
         echo $dari_div;
@@ -127,12 +128,12 @@ class listQuery extends database {
             $inv_dokumen=$no_dokumen.'/'.$kepada_div.'/'.$bulan;
         }
 
-        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
+        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_user,id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
         if ($query === false){
             die ("error prep state : ".$this->conn->error);
         }
         $null = NULL;
-        $query->bind_param("iissssssssbss",$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$nm_file,$null,$jenis_dokumen,$status,);
+        $query->bind_param("iiissssssssbss",$id_user,$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$nm_file,$null,$jenis_dokumen,$status,);
         $query->send_long_data(10,$filecontent);
         // var_dump($filecontent);
         if ($query->execute()){
@@ -217,6 +218,10 @@ class listQuery extends database {
         }
     }
 
+    public function drDiv($id_user){
+        $query = mysqli_query($this->conn, "SELECT deskripsi FROM tb_divisi A, tb_user B WHERE A.id_divisi = B.id_divisi AND B.id_user=$id_user");
+        return mysqli_fetch_assoc($query);
+    }
 
     // fungsi untuk menampilkan nama divisi untuk button select (dari divisi & kepada divisi)
     public function divisi(){

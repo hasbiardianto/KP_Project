@@ -31,6 +31,7 @@
                     </thead>
                     <tbody>
                         <?php 
+                            $pdf = $ListQuery->listFile();
                             $inHistory = $ListQuery->riwayatKeluar($_SESSION["id_user"]);
                             if ($inHistory){
                                 foreach($inHistory as $row){ ?>
@@ -51,10 +52,19 @@
                                             <a  class="btn btn-primary"
                                                 data-toggle="modal"
                                                 href="#modalid"
+                                                style="margin-right: -75px"
                                                 onclick="modalid(<?=$row['id_dokumen'];?>,'<?=$row['inv_dokumen'];?>', '<?=$row['nama_dokumen'];?>', '<?=$row['pengirim'];?>', '<?=$row['dari_div'];?>', '<?=$row['kepada_div'];?>',
                                                                 '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')">
                                                 <i class="typcn typcn-eye"></i>
                                             </a>
+                                        </td>
+                                        <td>
+                                        <?php
+                                            foreach ($pdf as $file): ?>
+                                            <?php if ($file['id_dokumen'] == $row['id_dokumen']): ?>
+                                            <td><a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary" >Open</a></td>
+                                            <?php endif; ?>
+                                            <?php endforeach; ?>
                                         </td>
                                     </tr>
                                 <?php }
@@ -161,12 +171,6 @@
                                     <input type="text" class="form-control" name="nm_file" id="modal_file" style="border: none; font-weight:bold;" readonly>
                                 </div>
                             </div>
-
-                            <?php
-                            $pdf = $ListQuery->listFile();
-                            foreach ($pdf as $file): ?>
-                            <td><a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary">Open</a></td>
-                            <?php endforeach; var_dump($pdf) ?>
                         </div>
                     </div>
                 </div>

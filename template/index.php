@@ -13,6 +13,8 @@ if(isset($_SESSION["id_user"])){
 else {
   header("Location: ./pages/login.php");
 }
+// session_start();
+// $_SESSION['id_divisi'] = $user['deskripsi'];
 // if(isset($_SESSION["id_user"])){
 //   $user = $ListQuery->userSelected($_SESSION["id_user"]);
 // }

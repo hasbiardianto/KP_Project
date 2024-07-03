@@ -3,6 +3,9 @@
 // error_reporting(E_ALL);
 // ini_set('display_errors', '1');
 
+// session_start();
+
+
 if(isset($_POST['submit'])){
     if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK){
         $nm_file = $_FILES['file']['name'];
@@ -13,9 +16,12 @@ if(isset($_POST['submit'])){
         }
     }
 
+
     $hasil = $ListQuery->isiForm(
+        
         // $_POST["no_dokumen"],
         // $_POST["inv_dokumen"],
+        
         $_POST["id_divisi"],
         $_POST["id_divisi_kepada"],
         // ['id_file'],
@@ -32,6 +38,7 @@ if(isset($_POST['submit'])){
         // $_POST['filecontent'],
         $_POST["jenis_dokumen"],
         $_POST["status"]
+        
     );
 
 
@@ -78,6 +85,40 @@ if(isset($_POST['submit'])){
                                         <input type="text" name="pengirim" class="form-control" value="<?= $user["nama_user"]; ?>" readonly>
                                     </div>
                                     <div class="form-group">
+                                        <label for="">Dari</label>
+
+                                        <!-- PERCOBAAN PERTAMA -->
+
+                                            
+                                        <!-- <input type="text" name="id_divisi" class="form-control" value="<?= $user["deskripsi"]; ?>" readonly> -->
+                                    
+                                        <!-- PERCOBAAN KEDUA -->
+                                         <!-- <?php 
+                                         $listDiv = $ListQuery->divisi();
+                                         if ($listDiv) {
+                                             foreach ($listDiv as $result) {
+                                                 if ($result['id_divisi'] == $user['id_divisi']) {
+                                                     echo "<input type='text' name='id_divisi' value='$result[id_divisi]' readonly>";
+                                                    //  echo "<input type='text' name='desc' value='$result[desc]' readonly>";
+                                                 }
+                                             }
+                                         }
+                                         ?> -->
+
+                                        <input class="col-sm-6" name="id_divisi"
+                                            <?php
+                                                $listDiv = $ListQuery->divisi();
+                                                if ($listDiv){
+                                                    foreach($listDiv as $hasil){
+                                                        // echo "<option value='$hasil[id_divisi]'>$hasil[deskripsi]</option>";
+                                                        echo "<input type='text' name='id_divisi' value='$hasil[deskripsi]'";
+                                                    }
+                                                }
+                                            ?>
+                                        readonly>
+
+                                    </div>
+                                    <div class="form-group">
                                         <label for="">Dari divisi</label><br>
                                         <!-- <input type="text" name="pengirim" class="form-control" placeholder="Pengirim"> -->
                                         <select class="col-sm-6" name="id_divisi">
@@ -86,6 +127,7 @@ if(isset($_POST['submit'])){
                                                 if ($listDiv){
                                                     foreach($listDiv as $hasil){
                                                         echo "<option value='$hasil[id_divisi]'>$hasil[deskripsi]</option>";
+                                                        // echo "<input type='text' name='id_divisi' value='$hasil[deskripsi]' readonly>";
                                                     }
                                                 }
                                             ?>
@@ -189,6 +231,7 @@ if(isset($_POST['submit'])){
                         
                         <?php
                             // $newView = new viewDoc();
+                            $pdf = $ListQuery->listFile();
                             $hasilIn = $ListQuery->documentIn($_SESSION["id_user"]);
                             if ($hasilIn){ 
                                 foreach($hasilIn as $row){?>
@@ -213,7 +256,12 @@ if(isset($_POST['submit'])){
                                                             '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')">
                                             <i class="typcn typcn-eye"></i>
                                         </a>
-
+                                        <?php
+                                            foreach ($pdf as $file): ?>
+                                            <?php if ($file['id_dokumen'] == $row['id_dokumen']): ?>
+                                            <a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary" >Open</a>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
                                         <?php
                                             if (isset($_SESSION['lvl'])){
                                                 $lvl = $_SESSION['lvl'];
@@ -243,7 +291,9 @@ if(isset($_POST['submit'])){
                                                 }
                                             }
                                         ?>
+
                                     </td>
+
                                 </tr>
                                 <?php }
                             }

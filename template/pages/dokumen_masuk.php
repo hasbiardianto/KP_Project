@@ -34,7 +34,7 @@
                     </thead>
                     <tbody>
                     <?php
-
+                        $pdf = $ListQuery->listFile();
                         $hasilIn2 = $ListQuery->documentIn2($_SESSION["id_user"]);
                         if ($hasilIn2){
                             foreach($hasilIn2 as $row){ ?>
@@ -62,7 +62,12 @@
                                     </a>
                                     <!-- <form action="" method="POST" name="info"> -->
                                     <!-- Form View Dokumen Mulai -->
-
+                                    <?php
+                                        foreach ($pdf as $file): ?>
+                                        <?php if ($file['id_dokumen'] == $row['id_dokumen']): ?>
+                                        <a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary" >Open</a>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
                                     <?php
                                         if (isset($_SESSION['lvl'])){
                                             $lvl = $_SESSION['lvl'];
@@ -97,7 +102,7 @@
                             </tr>
                             <?php }
                         }
-                        
+                        $pdf = $ListQuery->listFile();
                         $hasilIn3 = $ListQuery->documentIn3($_SESSION["id_user"]);
                         if ($hasilIn3){
                             foreach($hasilIn3 as $row){ ?>
@@ -128,6 +133,12 @@
                                                                     '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')"
                                                     ><i class="typcn typcn-eye"></i>
                                                 </a>
+                                                <?php
+                                                    foreach ($pdf as $file): ?>
+                                                    <?php if ($file['id_dokumen'] == $row['id_dokumen']): ?>
+                                                    <a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary" >Open</a>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
                                                 <div class="btn-group">
                                                     <button id="finish" onclick="statusFinish('<?=$row['id_dokumen'];?>','<?=$row['nama_dokumen'];?>')" class="btn btn-primary">Finish</button>
                                                 </div>
@@ -144,6 +155,7 @@
                                             <?php }
                                         }
                                     ?>
+
                                 </td>
                             </tr>
                             <?php }

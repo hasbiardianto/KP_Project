@@ -28,6 +28,7 @@ $lsQuery = new listQuery();
 $user_log = new masuk();
 
 
+
 if(isset($_POST['submit'])){
   $result = $user_log->userMasuk(
     $_POST["nama_user"],
@@ -49,6 +50,7 @@ if(isset($_POST['submit'])){
       echo "<script> alert('user belum terdaftar'); </script>";
   }
 }
+
 
 ?>
 

@@ -97,10 +97,10 @@ class masuk extends database {
 class listQuery extends database {
 
     // fungsi untuk pengisian form dokumen
-    public function isiForm($id_user,$id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $nm_file,$filecontent, $jenis_dokumen,$status){
+    public function isiForm($id_divisi, $id_divisi_kepada, $no_dokumen, $inv_dokumen, $nama_dokumen, $pengirim, $dari_div, $kepada_div, $penerima, $nm_file,$filecontent, $jenis_dokumen,$status){
         // menampilkan nama divisi pada tabel dokumen ($dari div) yang diambil dari database tb_divisi (untuk menampilkan data agar terlihat saat di tabel field (dari div))
         $queryNama = mysqli_query($this->conn,"SELECT * FROM tb_divisi WHERE id_divisi=$id_divisi");
-        // $queryNama = mysqli_query($this->conn,"SELECT id_user, deskripsi FROM tb_user A, tb_divisi B WHERE A.id_divisi= B.id_divisi AND A.id_user = $id_user");
+        // $queryNama = mysqli_query($this->conn,"SELECT deskripsi FROM tb_user A, tb_divisi B WHERE A.id_divisi= B.id_divisi AND A= );
         $hasilQueryNama = mysqli_fetch_array($queryNama);
         $dari_div=$hasilQueryNama[1];
         echo $dari_div;
@@ -128,12 +128,12 @@ class listQuery extends database {
             $inv_dokumen=$no_dokumen.'/'.$kepada_div.'/'.$bulan;
         }
 
-        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_user,id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
+        $query = $this->conn->prepare("INSERT INTO tb_dokumen (id_divisi, id_divisi_kepada, no_dokumen, inv_dokumen, nama_dokumen, pengirim, dari_div, kepada_div, penerima, nm_file,filecontent, jenis_dokumen,status, tgl_masuk) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())");
         if ($query === false){
             die ("error prep state : ".$this->conn->error);
         }
         $null = NULL;
-        $query->bind_param("iiissssssssbss",$id_user,$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$nm_file,$null,$jenis_dokumen,$status,);
+        $query->bind_param("iissssssssbss",$id_divisi,$id_divisi_kepada,$no_dokumen,$inv_dokumen,$nama_dokumen,$pengirim,$dari_div,$kepada_div,$penerima,$nm_file,$null,$jenis_dokumen,$status,);
         $query->send_long_data(10,$filecontent);
         // var_dump($filecontent);
         if ($query->execute()){
@@ -296,6 +296,63 @@ class listQuery extends database {
         $hasil = $qfile->get_result();
         return $hasil->fetch_assoc();
     }
+
+
+    public function hisKeluar($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = $id_user AND A.id_divisi=B.id_divisi  AND STATUS = 'finish'");
+        return mysqli_fetch_assoc($query);
+    }
+
+    public function hisMasuk($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = $id_user AND B.id_divisi = A.id_divisi_kepada  AND STATUS = 'finish'");
+        return mysqli_fetch_assoc($query);
+    }
+
+    public function reject($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = $id_user AND A.id_divisi=B.id_divisi  AND STATUS = 'reject'");
+        return mysqli_fetch_assoc($query);
+
+    }
+
+    public function dashPenFrom($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = $id_user AND A.id_divisi=B.id_divisi  AND STATUS = 'pendingDari'");
+        return mysqli_fetch_assoc($query);
+    }
+
+    public function dashPenTo($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = $id_user AND A.id_divisi_kepada=B.id_divisi  AND STATUS = 'pendingKepada'");
+        return mysqli_fetch_assoc($query);
+    }
+
+    public function monDoc($id_user){
+        $query = mysqli_query($this->conn,"SELECT COUNT(no_dokumen) AS Total FROM tb_dokumen A, tb_user B WHERE B.id_user = 2 AND A.id_divisi=B.id_divisi  AND MONTH(tgl_masuk) = MONTH(NOW()) AND YEAR(tgl_masuk) = YEAR(NOW())");
+        return mysqli_fetch_assoc($query);
+    }
+
+    public function dashIn($id_user){
+        $query = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi_kepada=B.id_divisi AND status='pendingKepada' OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC LIMIT 2");
+        
+        mysqli_fetch_assoc($query);
+        if ($query->num_rows > 0){
+            return $query;
+        } else {
+            return false;
+        }
+    }
+
+    public function dashOut($id_user){
+        $query = mysqli_query($this->conn,"SELECT * FROM tb_dokumen A, tb_user B WHERE B.id_user=$id_user AND A.id_divisi=B.id_divisi AND status='pendingDari' OR A.penerima='all'=B.id_user ORDER BY no_dokumen DESC LIMIT 2");
+        
+        mysqli_fetch_assoc($query);
+        if ($query->num_rows > 0){
+            return $query;
+        } else {
+            return false;
+        }
+    }
+
+
+
 
 }
 

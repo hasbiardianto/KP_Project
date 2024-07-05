@@ -105,7 +105,7 @@ if(isset($_POST['submit'])){
                                          }
                                          ?> -->
 
-                                        <input class="col-sm-6" name="id_divisi"
+                                        <!-- <input class="col-sm-6" name="id_divisi"
                                             <?php
                                                 $listDiv = $ListQuery->divisi();
                                                 if ($listDiv){
@@ -115,7 +115,7 @@ if(isset($_POST['submit'])){
                                                     }
                                                 }
                                             ?>
-                                        readonly>
+                                        readonly> -->
 
                                     </div>
                                     <div class="form-group">

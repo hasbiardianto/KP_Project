@@ -152,6 +152,12 @@
                                                                     '<?=$row['penerima'];?>', '<?=$row['nm_file'];?>', '<?=$row['status'];?>')"
                                                     ><i class="typcn typcn-eye"></i>
                                                 </a>
+                                                <?php
+                                                    foreach ($pdf as $file): ?>
+                                                    <?php if ($file['id_dokumen'] == $row['id_dokumen']): ?>
+                                                    <a href="pages/opDoc.php?id_dokumen=<?php echo $file['id_dokumen'];?>" class="btn btn-primary" >Open</a>
+                                                    <?php endif; ?>
+                                                <?php endforeach; ?>
                                             <?php }
                                         }
                                     ?>

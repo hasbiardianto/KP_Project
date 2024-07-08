@@ -89,12 +89,12 @@ else {
           </li> -->
         </ul>
         <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-date dropdown">
+          <!-- <li class="nav-item nav-date dropdown">
             <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
               <h6 class="date mb-0">Today : Mar 23</h6>
               <i class="typcn typcn-calendar"></i>
             </a>
-          </li>
+          </li> -->
           <!-- <li class="nav-item dropdown">
             <a class="nav-link count-indicator dropdown-toggle d-flex justify-content-center align-items-center" id="messageDropdown" href="#" data-toggle="dropdown">
               <i class="typcn typcn-cog-outline mx-0"></i>

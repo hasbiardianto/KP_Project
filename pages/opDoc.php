@@ -1,5 +1,6 @@
 <?php
-require '.././koneksi.php';
+require '.././connection.php';
+
 $pdf = new listQuery();
 if (isset($_GET['id_dokumen']) && is_numeric($_GET['id_dokumen'])){
     $id_dokumen = intval($_GET['id_dokumen']);

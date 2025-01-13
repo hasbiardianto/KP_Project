@@ -1,6 +1,6 @@
 <?php
 
-require ".././koneksi.php";
+require ".././connection.php";
 
 $ListQuery = new listQuery();
 

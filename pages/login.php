@@ -1,6 +1,7 @@
 <?php
-require ".././koneksi.php";
+require ".././connection.php";
 $lsQuery = new listQuery();
+
 // if(isset($_POST['submit'])){
 //   $hasil = $ListQuery->logIn(
 //     $_POST["nama_user"],
@@ -25,7 +26,7 @@ $lsQuery = new listQuery();
 
 // require "koneksi.php";
 
-$user_log = new masuk();
+$user_log = new login();
 
 
 

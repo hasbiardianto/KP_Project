@@ -1,10 +1,11 @@
 <?php
-require "koneksi.php";
+
+require "connection.php";
 
 // biar tidak membuat banyak class
 $ListQuery = new listQuery();
 
-$log = new masuk();
+$log = new login();
 // $log = new selectUser();
 
 if(isset($_SESSION["id_user"])){

@@ -1,5 +1,5 @@
 <?php
-require "koneksi.php";
+require "connection.php";
 $conKoneksi = new listQuery();
 $action = $_POST['act'];
 
@@ -27,13 +27,5 @@ if(isset($action)){
             echo json_encode(array("status"=>"Error"));
         }
     }
-    // else if($action == 'insertDoc'){
-    //     $command=$conKoneksi->insertDok($_POST);
-    //     if($command==1){
-    //         echo json_encode(array("status"=>"Berhasil"));
-    //     } else {
-    //         echo json_encode(array("status"=>"Error"));
-    //     }
-    // }
 }
 ?>

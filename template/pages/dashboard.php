@@ -44,7 +44,7 @@ $OutPrev = $ListQuery->dashOut($_SESSION["id_user"]);
     <tbody>
     <?php 
     if ($inPrev){
-        foreach($inPrev as $prev){ ?>
+        foreach($inPrev as $prev) { ?>
                     <tr>
                         <td><?=$prev["inv_dokumen"];?></td>
                         <td><?=$prev["nama_dokumen"];?></td>

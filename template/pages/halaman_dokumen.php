@@ -205,9 +205,6 @@ if(isset($_POST['submit'])){
             </div><br>
             <!-- Tabel untuk menampilkan dokumen yang telah dibuat (mulai) -->
             <div class="table-responsive">
-                <?php
-                    print_r($_SESSION);
-                ?>
                 <table id="dokumenKeluar" class="table table-hover">
                     <thead>
                     <tr>
